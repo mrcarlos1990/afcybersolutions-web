@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Proyectos</h1><p>Administra el portafolio público.</p></div>
+{% include "admin/partials/project_form.html" %}
+{% for item in projects %}
+<form class="admin-card edit-row" method="post" enctype="multipart/form-data" action="{{ url_for('update_project', item_id=item.id) }}">
+  <input class="form-control" name="name" value="{{ item.name }}" required>
+  <input class="form-control" name="category" value="{{ item.category }}">
+  <input class="form-control" name="link" value="{{ item.link or '' }}">
+  <textarea class="form-control" name="description" required>{{ item.description }}</textarea>
+  <input class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+  <label class="check"><input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}> Activo</label>
+  <button class="btn btn-primary">Guardar</button>
+  <button formaction="{{ url_for('delete_project', item_id=item.id) }}" class="btn btn-outline-danger">Eliminar</button>
+</form>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Configuración general</h1><p>Edita identidad, contenido, colores, contacto y visibilidad de secciones.</p></div>
+<form class="admin-card stacked-form" method="post" enctype="multipart/form-data">
+  <h2>Identidad</h2>
+  <div class="grid-2">
+    {% for field,label in [('company_name','Nombre de la empresa'),('domain','Dominio'),('slogan','Slogan'),('hero_title','Título del inicio'),('whatsapp','WhatsApp'),('phone','Teléfono'),('main_email','Correo principal'),('corporate_email','Correo corporativo'),('address','Dirección'),('business_hours','Horario'),('font_family','Tipo de fuente')] %}
+      <label>{{ label }}<input class="form-control" name="{{ field }}" value="{{ settings|attr(field) or '' }}"></label>
+    {% endfor %}
+  </div>
+  <label>Texto del inicio<textarea class="form-control" name="hero_text">{{ settings.hero_text }}</textarea></label>
+  <label>Historia breve<textarea class="form-control" name="about_text">{{ settings.about_text }}</textarea></label>
+  <div class="grid-3">
+    <label>Misión<textarea class="form-control" name="mission">{{ settings.mission }}</textarea></label>
+    <label>Visión<textarea class="form-control" name="vision">{{ settings.vision }}</textarea></label>
+    <label>Valores<textarea class="form-control" name="values">{{ settings.values }}</textarea></label>
+  </div>
+  <h2>Imágenes</h2>
+  <div class="grid-4">
+    {% for field,label in [('logo','Logo'),('favicon','Favicon'),('hero_image','Imagen principal'),('about_image','Imagen nosotros')] %}
+      <label>{{ label }}<input class="form-control image-input" type="file" name="{{ field }}" accept=".jpg,.jpeg,.png,.webp"><img class="preview" src="{% if settings|attr(field) %}{{ (settings|attr(field))|asset }}{% endif %}"></label>
+    {% endfor %}
+  </div>
+  <h2>Diseño</h2>
+  <div class="grid-5">
+    {% for field,label in [('primary_color','Principal'),('secondary_color','Secundario'),('button_color','Botones'),('background_color','Fondo'),('text_color','Texto')] %}
+      <label>{{ label }}<input class="form-control form-control-color" type="color" name="{{ field }}" value="{{ settings|attr(field) }}"></label>
+    {% endfor %}
+  </div>
+  <label class="check"><input type="checkbox" name="dark_mode" {% if settings.dark_mode %}checked{% endif %}> Modo oscuro</label>
+  <h2>Redes y mapa</h2>
+  <div class="grid-2">
+    {% for field,label in [('facebook','Facebook'),('instagram','Instagram'),('tiktok','TikTok'),('youtube','YouTube'),('linkedin','LinkedIn')] %}
+      <label>{{ label }}<input class="form-control" name="{{ field }}" value="{{ settings|attr(field) or '' }}"></label>
+    {% endfor %}
+  </div>
+  <label>Google Maps iframe o enlace<textarea class="form-control" name="maps_embed">{{ settings.maps_embed or '' }}</textarea></label>
+  <h2>Secciones visibles</h2>
+  <div class="checks-grid">
+    {% for field,label in [('show_about','Nosotros'),('show_services','Servicios'),('show_projects','Portafolio'),('show_gallery','Galería'),('show_testimonials','Testimonios'),('show_contact','Contacto')] %}
+      <label class="check"><input type="checkbox" name="{{ field }}" {% if settings|attr(field) %}checked{% endif %}> {{ label }}</label>
+    {% endfor %}
+  </div>
+  <div class="form-actions"><button class="btn btn-primary">Guardar cambios</button></div>
+</form>
+<form method="post" action="{{ url_for('reset_colors') }}" class="mt-3"><button class="btn btn-outline-secondary">Restaurar colores por defecto</button></form>
+{% endblock %}

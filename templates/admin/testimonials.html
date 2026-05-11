@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Testimonios</h1><p>Gestiona clientes y comentarios.</p></div>
+<form class="admin-card mini-form" method="post" enctype="multipart/form-data">
+  <input class="form-control" name="client_name" placeholder="Nombre del cliente" required>
+  <input class="form-control" name="company" placeholder="Empresa">
+  <textarea class="form-control" name="comment" placeholder="Comentario" required></textarea>
+  <input class="form-control" type="file" name="photo" accept=".jpg,.jpeg,.png,.webp">
+  <label class="check"><input type="checkbox" name="is_active" checked> Activo</label>
+  <button class="btn btn-primary">Agregar testimonio</button>
+</form>
+{% for item in testimonials %}
+<form class="admin-card edit-row" method="post" enctype="multipart/form-data" action="{{ url_for('update_testimonial', item_id=item.id) }}">
+  <input class="form-control" name="client_name" value="{{ item.client_name }}" required>
+  <input class="form-control" name="company" value="{{ item.company or '' }}">
+  <textarea class="form-control" name="comment" required>{{ item.comment }}</textarea>
+  <input class="form-control" type="file" name="photo" accept=".jpg,.jpeg,.png,.webp">
+  <label class="check"><input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}> Activo</label>
+  <button class="btn btn-primary">Guardar</button>
+  <button formaction="{{ url_for('delete_testimonial', item_id=item.id) }}" class="btn btn-outline-danger">Eliminar</button>
+</form>
+{% endfor %}
+{% endblock %}

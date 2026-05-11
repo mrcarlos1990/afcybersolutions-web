@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Dashboard</h1><p>Resumen general del sitio y mensajes recientes.</p></div>
+<div class="stats-grid">
+  {% for label, value in [('Servicios', totals.services), ('Proyectos', totals.projects), ('Galería', totals.gallery), ('Testimonios', totals.testimonials), ('Mensajes nuevos', totals.messages)] %}
+  <article><span>{{ label }}</span><strong>{{ value }}</strong></article>
+  {% endfor %}
+</div>
+<section class="admin-card">
+  <h2>Mensajes recientes</h2>
+  {% for msg in messages %}
+    <div class="message-row"><strong>{{ msg.subject }}</strong><span>{{ msg.name }} · {{ msg.email }}</span></div>
+  {% else %}
+    <p>No hay mensajes todavía.</p>
+  {% endfor %}
+</section>
+{% endblock %}

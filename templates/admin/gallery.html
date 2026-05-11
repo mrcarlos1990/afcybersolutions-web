@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Galería</h1><p>Sube imágenes de trabajos, sistemas, instalaciones y promociones.</p></div>
+<form class="admin-card mini-form" method="post" enctype="multipart/form-data">
+  <input class="form-control" name="title" placeholder="Título" required>
+  <input class="form-control" name="category" placeholder="Categoría">
+  <input class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png,.webp" required>
+  <label class="check"><input type="checkbox" name="is_active" checked> Activo</label>
+  <button class="btn btn-primary">Subir imagen</button>
+</form>
+<div class="admin-gallery">
+  {% for item in gallery %}
+  <article class="admin-card">
+    <img src="{{ item.image|asset }}" alt="{{ item.title }}">
+    <strong>{{ item.title }}</strong><span>{{ item.category }}</span>
+    <form method="post" action="{{ url_for('delete_gallery', item_id=item.id) }}"><button class="btn btn-outline-danger btn-sm">Eliminar</button></form>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

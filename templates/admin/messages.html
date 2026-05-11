@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Mensajes</h1><p>Solicitudes recibidas desde el formulario de contacto.</p></div>
+{% for msg in messages %}
+<article class="admin-card message-card {% if not msg.is_read %}unread{% endif %}">
+  <div><strong>{{ msg.subject }}</strong><span>{{ msg.created_at.strftime('%d/%m/%Y %H:%M') }}</span></div>
+  <p>{{ msg.message }}</p>
+  <small>{{ msg.name }} · {{ msg.email }} · {{ msg.phone }}</small>
+  <form method="post" class="message-actions">
+    <button formaction="{{ url_for('mark_message_read', item_id=msg.id) }}" class="btn btn-outline-primary btn-sm">Marcar leído</button>
+    <button formaction="{{ url_for('delete_message', item_id=msg.id) }}" class="btn btn-outline-danger btn-sm">Eliminar</button>
+  </form>
+</article>
+{% else %}
+<p>No hay mensajes.</p>
+{% endfor %}
+{% endblock %}

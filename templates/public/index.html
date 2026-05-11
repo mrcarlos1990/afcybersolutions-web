@@ -1,0 +1,200 @@
+{% extends "public/base.html" %}
+{% block content %}
+<nav class="navbar navbar-expand-lg fixed-top glass-nav">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#inicio">
+      {% if settings.logo %}<img src="{{ settings.logo|asset }}" class="brand-logo" alt="{{ settings.company_name }}">{% else %}<span class="brand-mark">AF</span>{% endif %}
+      <span>{{ settings.company_name }}</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#portafolio">Portafolio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+        <li class="nav-item ms-lg-3"><a class="btn btn-primary-soft" href="https://wa.me/{{ settings.whatsapp }}" target="_blank">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header id="inicio" class="hero-section">
+  <div class="hero-grid"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <div class="eyebrow"><i data-lucide="shield-check"></i> {{ settings.domain }}</div>
+        <h1>{{ settings.hero_title }}</h1>
+        <p class="hero-copy">{{ settings.hero_text }}</p>
+        <div class="hero-actions">
+          <a href="#contacto" class="btn btn-main">Solicitar servicio</a>
+          <a href="#servicios" class="btn btn-outline-modern">Ver servicios</a>
+          <a href="https://wa.me/{{ settings.whatsapp }}?text=Hola,%20quiero%20solicitar%20un%20servicio%20tecnol%C3%B3gico" target="_blank" class="btn btn-whatsapp"><i data-lucide="message-circle"></i> Contactar por WhatsApp</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-visual">
+          {% if settings.hero_image %}
+            <img src="{{ settings.hero_image|asset }}" alt="Imagen principal">
+          {% else %}
+            <div class="tech-panel">
+              <div class="panel-top"></div>
+              <div class="metric-row"><span>Ciberseguridad</span><strong>99.9%</strong></div>
+              <div class="metric-row"><span>Soporte</span><strong>24/7</strong></div>
+              <div class="metric-row"><span>Software</span><strong>Escalable</strong></div>
+              <div class="pulse-map"></div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  {% include "public/partials/flash.html" %}
+  {% if settings.show_about %}
+  <section id="nosotros" class="section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5">
+          <div class="image-frame">
+            {% if settings.about_image %}<img src="{{ settings.about_image|asset }}" alt="Nosotros">{% else %}<div class="about-placeholder"><i data-lucide="cpu"></i><span>AFCyber SOLUTIONS</span></div>{% endif %}
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <span class="section-kicker">Nosotros</span>
+          <h2>Aliados tecnológicos para operar con confianza</h2>
+          <p class="lead-muted">{{ settings.about_text }}</p>
+          <div class="value-grid">
+            <article><i data-lucide="target"></i><h3>Misión</h3><p>{{ settings.mission }}</p></article>
+            <article><i data-lucide="telescope"></i><h3>Visión</h3><p>{{ settings.vision }}</p></article>
+            <article><i data-lucide="gem"></i><h3>Valores</h3><p>{{ settings.values }}</p></article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if settings.show_services %}
+  <section id="servicios" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Servicios</span>
+        <h2>Soluciones tecnológicas completas</h2>
+      </div>
+      <div class="row g-4">
+        {% for service in services %}
+        <div class="col-md-6 col-xl-4">
+          <article class="service-card">
+            {% if service.image %}<img src="{{ service.image|asset }}" alt="{{ service.title }}">{% else %}<div class="service-icon"><i data-lucide="{{ service.icon }}"></i></div>{% endif %}
+            <h3>{{ service.title }}</h3>
+            <p>{{ service.description }}</p>
+            <a target="_blank" href="https://wa.me/{{ settings.whatsapp }}?text=Hola%20AFCyber%20SOLUTIONS,%20quiero%20informaci%C3%B3n%20sobre%20{{ service.title|urlencode }}" class="service-link">Solicitar este servicio <i data-lucide="arrow-right"></i></a>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if settings.show_projects %}
+  <section id="portafolio" class="section">
+    <div class="container">
+      <div class="section-head"><span class="section-kicker">Portafolio</span><h2>Proyectos y soluciones implementadas</h2></div>
+      <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-md-6">
+          <article class="project-card">
+            {% if project.image %}<img src="{{ project.image|asset }}" alt="{{ project.name }}">{% endif %}
+            <div><span>{{ project.category }}</span><h3>{{ project.name }}</h3><p>{{ project.description }}</p>{% if project.link %}<a href="{{ project.link }}" target="_blank">Ver proyecto</a>{% endif %}</div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if settings.show_gallery and gallery %}
+  <section id="galeria" class="section section-alt">
+    <div class="container">
+      <div class="section-head"><span class="section-kicker">Galería</span><h2>Trabajos, instalaciones y diseños</h2></div>
+      <div class="gallery-grid">
+        {% for item in gallery %}
+          <figure><img src="{{ item.image|asset }}" alt="{{ item.title }}"><figcaption>{{ item.title }} <span>{{ item.category }}</span></figcaption></figure>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if settings.show_testimonials %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="section-kicker">Clientes</span><h2>Confianza respaldada por resultados</h2></div>
+      <div class="row g-4">
+        {% for item in testimonials %}
+        <div class="col-md-4">
+          <article class="testimonial-card">
+            {% if item.photo %}<img src="{{ item.photo|asset }}" alt="{{ item.client_name }}">{% endif %}
+            <p>“{{ item.comment }}”</p>
+            <strong>{{ item.client_name }}</strong><span>{{ item.company }}</span>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if settings.show_contact %}
+  <section id="contacto" class="section contact-section">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-5">
+          <span class="section-kicker">Contacto</span>
+          <h2>Hablemos de tu próximo proyecto</h2>
+          <div class="contact-list">
+            <p><i data-lucide="phone"></i>{{ settings.phone }}</p>
+            <p><i data-lucide="mail"></i>{{ settings.main_email }}</p>
+            <p><i data-lucide="map-pin"></i>{{ settings.address }}</p>
+            <p><i data-lucide="clock"></i>{{ settings.business_hours }}</p>
+          </div>
+          <div class="socials">
+            {% for url, icon in [(settings.facebook,'facebook'),(settings.instagram,'instagram'),(settings.youtube,'youtube'),(settings.linkedin,'linkedin')] %}
+              {% if url %}<a href="{{ url }}" target="_blank"><i data-lucide="{{ icon }}"></i></a>{% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <form class="contact-form" method="post" action="{{ url_for('contact') }}">
+            <div class="row g-3">
+              <div class="col-md-6"><input required name="name" class="form-control" placeholder="Nombre"></div>
+              <div class="col-md-6"><input required type="email" name="email" class="form-control" placeholder="Correo"></div>
+              <div class="col-md-6"><input name="phone" class="form-control" placeholder="Teléfono"></div>
+              <div class="col-md-6"><input required name="subject" class="form-control" placeholder="Asunto"></div>
+              <div class="col-12"><textarea required name="message" rows="5" class="form-control" placeholder="Mensaje"></textarea></div>
+              <div class="col-12"><button class="btn btn-main w-100">Enviar mensaje</button></div>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% if settings.maps_embed %}<div class="map-wrap mt-5">{{ settings.maps_embed|safe }}</div>{% endif %}
+    </div>
+  </section>
+  {% endif %}
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Hecho por la Empresa AFCyber SOLUTIONS</p>
+    <p>Firma: Desarrollado por: Ing. Amauri Feliz</p>
+    <p>&copy; <span id="year"></span> {{ settings.company_name }}. Todos los derechos reservados.</p>
+  </div>
+</footer>
+{% endblock %}

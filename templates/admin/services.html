@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="admin-header"><h1>Servicios</h1><p>Agrega, edita y organiza los servicios principales.</p></div>
+<form class="admin-card mini-form" method="post" enctype="multipart/form-data">
+  <input class="form-control" name="title" placeholder="Título" required>
+  <input class="form-control" name="icon" placeholder="Icono Lucide: shield-check">
+  <input class="form-control" type="number" name="position" placeholder="Orden">
+  <textarea class="form-control" name="description" placeholder="Descripción" required></textarea>
+  <input class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+  <label class="check"><input type="checkbox" name="is_active" checked> Activo</label>
+  <button class="btn btn-primary">Agregar servicio</button>
+</form>
+{% for item in services %}
+<form class="admin-card edit-row" method="post" enctype="multipart/form-data" action="{{ url_for('update_service', item_id=item.id) }}">
+  <input class="form-control" name="title" value="{{ item.title }}" required>
+  <input class="form-control" name="icon" value="{{ item.icon }}">
+  <input class="form-control" type="number" name="position" value="{{ item.position }}">
+  <textarea class="form-control" name="description" required>{{ item.description }}</textarea>
+  <input class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+  <label class="check"><input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}> Activo</label>
+  <button class="btn btn-primary">Guardar</button>
+  <button formaction="{{ url_for('delete_service', item_id=item.id) }}" class="btn btn-outline-danger">Eliminar</button>
+</form>
+{% endfor %}
+{% endblock %}
